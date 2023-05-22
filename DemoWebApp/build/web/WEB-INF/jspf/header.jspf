@@ -1,0 +1,32 @@
+<%@page import="model.User"%>
+<%@page import="web.AppListener"%>
+<%@ page pageEncoding="UTF-8" %>
+<%
+    if(request.getParameter("do-logoff")!= null){
+        session.removeAttribute("me.id");
+        session.removeAttribute("me.name");
+        session.removeAttribute("me.login");
+        session.removeAttribute("me.passwordHash");
+        response.sendRedirect(request.getContextPath()+"/index.jsp");
+    }
+%>
+<h1>Parking WebApp</h1>
+<%if(session.getAttribute("me.login")!=null){%>
+    <form>
+        Bem vindo, <%=session.getAttribute("me.name")%>!
+        <input type="submit" name="do-logoff" value="Sair"/>
+    </form>
+    <hr/>
+    <div>
+        <a href="stays.jsp">ESTADIAS</a> | 
+        <a href="history.jsp">HISTÓRICO</a> | 
+        <a href="prices.jsp">PREÇOS</a>
+    </div>
+<%}%>
+<%if(AppListener.exception!=null){%>
+    <div style="color: red;">
+        Erro ao tentar conexão com o banco de dados:
+        <%=AppListener.exception.getMessage()%>
+    </div>
+<%}%>
+<hr/>
